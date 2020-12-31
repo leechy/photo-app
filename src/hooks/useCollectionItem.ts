@@ -3,7 +3,7 @@ import { useRequestStateFor } from './useRequestStateFor';
 import { RequestState } from '../models/RequestState';
 
 type RequestedCollectionItem = {
-  item: any;
+  item: { [prop: string]: any };
   state: RequestState;
 };
 export function useCollectionItem(collection: string, itemId: string = '', query?: string): RequestedCollectionItem {
@@ -11,7 +11,7 @@ export function useCollectionItem(collection: string, itemId: string = '', query
 
   const item = useSelector((state: any) => {
     return query && state.firestore.data[query]
-      ? (state.firestore.data[query][itemId] || state.firestore.data[query])
+      ? state.firestore.data[query][itemId] || state.firestore.data[query]
       : state.firestore.data[collection] && state.firestore.data[collection][itemId];
   }, shallowEqual);
 
@@ -20,7 +20,7 @@ export function useCollectionItem(collection: string, itemId: string = '', query
     state: {
       ...requestState,
       isNotFound: requestState.isLoaded && !item,
-      isEmpty: requestState.isLoaded && !!item && !Object.keys(item).length
-    }
+      isEmpty: requestState.isLoaded && !!item && !Object.keys(item).length,
+    },
   };
 }

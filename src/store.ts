@@ -11,6 +11,13 @@ import { createFirestoreInstance, firestoreReducer } from 'redux-firestore';
 import { firebaseConfig } from './firebase-config';
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 
+// models
+import { TLang } from './models/Lang';
+import { TAppData } from './models/AppData';
+import { TCategory } from './models/Category';
+import { TPage } from './models/Page';
+import { TMessage } from './models/Message';
+
 // react-redux-firebase config
 const rrfConfig = {
   userProfile: 'users',
@@ -39,6 +46,11 @@ const ui = (state = {}, action: any) => {
         ...state,
         showTabs: false,
       };
+    case 'SET_LANG':
+      return {
+        ...state,
+        lang: action.payload,
+      };
     default:
       return state;
   }
@@ -51,12 +63,42 @@ const rootReducer = combineReducers({
   ui,
 });
 
+export type TStoreState = {
+  firebase: any;
+  firestore: {
+    data?: {
+      translations?: {
+        locales?: {
+          [langId: string]: TLang;
+        };
+        messages?: {
+          [msgId: string]: TMessage;
+        };
+      };
+      meta?: {
+        app?: TAppData;
+        categories?: {
+          [catId: string]: TCategory;
+        };
+        pages?: {
+          [pageId: string]: TPage;
+        };
+      };
+    };
+  };
+  ui: {
+    showTabs: boolean;
+    lang: string;
+  };
+};
+
 // Create store with reducers and initial state
-const initialState = {
+const initialState: TStoreState = {
   firebase: {},
   firestore: {},
   ui: {
     showTabs: true,
+    lang: '',
   },
 };
 
