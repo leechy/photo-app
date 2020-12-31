@@ -1,0 +1,35 @@
+.text-field {
+  flex: 1;
+  width: 100%;
+
+  &--main-label {
+    font-size: 1rem !important;
+    transform: none !important;
+    margin-top: 1rem !important;
+  }
+
+  &--labeled-input {
+    padding-left: 2rem;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  &--label {
+    font-size: 0.9rem;
+    font-weight: 400;
+    margin: 0.7rem 0;
+
+    &::after {
+      content: ':';
+    }
+  }
+
+  &--label-inactive {
+    opacity: 0.5;
+  }
+
+  ion-input {
+    text-align: right;
+  }
+}

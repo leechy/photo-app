@@ -1,0 +1,67 @@
+.Draftail-Editor {
+  width: 100%;
+  padding: 8px 0px;
+}
+
+.Draftail-Toolbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-bottom: 0;
+  padding-bottom: 2px;
+  opacity: 0.3;
+}
+
+.Draftail-Editor--focus .Draftail-Toolbar {
+  opacity: 1;
+}
+
+.DraftEditor-root {
+  padding: var(--esch-padding-of-inputs);
+}
+
+.public-DraftEditor-content {
+  min-height: 3rem;
+}
+
+ion-split-pane .DraftEditor-root {
+  background: var(--esch-color-gray-of-inputs);
+  border-radius: 2px;
+}
+ion-split-pane .Draftail-Editor--focus .DraftEditor-root {
+  background: var(--esch-color-gray-of-inputs);
+}
+
+.Draftail-ToolbarGroup {
+  height: 20px;
+  padding: 2px 0 2px 2px;
+  margin-right: 2px;
+  line-height: 12px;
+  background: var(--esch-color-gray-of-inputs);
+  border-radius: 6px;
+}
+
+.Draftail-ToolbarButton {
+  display: inline-block;
+  width: 28px;
+  height: 16px;
+  margin: 0 2px 0 0;
+  padding: 2px 0px;
+  line-height: 14px;
+  font-size: 12px;
+  border-radius: 4px;
+  color: var(--ion-color-dark);
+  background: var(--ion-color-light);
+}
+
+.Draftail-ToolbarButton--active {
+  background: var(--ion-color-medium, #999);
+}
+
+.Draftail-ToolbarButton--active span {
+  color: var(--ion-color-dark);
+}
+
+.Draftail-block--unstyled {
+  margin: 1em 0;
+}
