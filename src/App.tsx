@@ -1,19 +1,34 @@
 import React from 'react';
+
+import { Provider } from 'react-redux';
+import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
+import { store, rrfProps } from './store';
+
 import { Redirect, Route } from 'react-router-dom';
-import {
-  IonApp,
-  IonIcon,
-  IonLabel,
-  IonRouterOutlet,
-  IonTabBar,
-  IonTabButton,
-  IonTabs
-} from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { ellipse, square, triangle } from 'ionicons/icons';
-import Tab1 from './pages/Tab1';
-import Tab2 from './pages/Tab2';
-import Tab3 from './pages/Tab3';
+
+// components
+import { IonApp, IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs } from '@ionic/react';
+import { cameraOutline, imagesOutline, languageOutline, mailOpenOutline, pricetagsOutline } from 'ionicons/icons';
+import DataLoader from './components/DataLoader';
+import { FormattedMessage } from 'react-intl';
+
+// pages
+import HomePage from './pages/HomePage';
+import Categories from './pages/Categories';
+import Contact from './pages/Contact';
+import PrivatePage from './pages/Private';
+import CategoriesListPage from './pages/CategoriesList';
+import CategoryEditPage from './pages/CategoryEdit';
+import PagesListPage from './pages/PagesList';
+import PageEditPage from './pages/PageEdit';
+import AppSettingsPage from './pages/AppSettings';
+import TranslationsPage from './pages/Translations';
+import LanguagesListPage from './pages/LanguagesList';
+import LanguageEditPage from './pages/LanguageEdit';
+import PhrasesListPage from './pages/PhrasesList';
+import PhraseEditPage from './pages/PhraseEdit';
+import PhotoshootsListPage from './pages/PhotoshootsList';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -34,32 +49,71 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
+/* General styles */
+import './theme/general.scss';
+
 const App: React.FC = () => (
   <IonApp>
-    <IonReactRouter>
-      <IonTabs>
-        <IonRouterOutlet>
-          <Route path="/tab1" component={Tab1} exact={true} />
-          <Route path="/tab2" component={Tab2} exact={true} />
-          <Route path="/tab3" component={Tab3} />
-          <Route path="/" render={() => <Redirect to="/tab1" />} exact={true} />
-        </IonRouterOutlet>
-        <IonTabBar slot="bottom">
-          <IonTabButton tab="tab1" href="/tab1">
-            <IonIcon icon={triangle} />
-            <IonLabel>Tab 1</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="tab2" href="/tab2">
-            <IonIcon icon={ellipse} />
-            <IonLabel>Tab 2</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="tab3" href="/tab3">
-            <IonIcon icon={square} />
-            <IonLabel>Tab 3</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
-      </IonTabs>
-    </IonReactRouter>
+    <Provider store={store}>
+      <ReactReduxFirebaseProvider {...rrfProps}>
+        <DataLoader>
+          <IonReactRouter>
+            <IonTabs>
+              <IonRouterOutlet>
+                <Route path="/home" component={HomePage} exact={true} />
+                <Route path="/categories" component={Categories} exact={true} />
+                <Route path="/contact" component={Contact} />
+                <Route path="/settings" exact={true} component={PrivatePage} />
+                <Route path="/settings/photoshoots" exact={true} component={PhotoshootsListPage} />
+                <Route path="/settings/categories" exact={true} component={CategoriesListPage} />
+                <Route path="/settings/categories/:itemId" exact={true} component={CategoryEditPage} />
+                <Route path="/settings/pages-content" exact={true} component={PagesListPage} />
+                <Route path="/settings/pages-content/:itemId" component={PageEditPage} />
+                <Route path="/settings/app-settings" exact={true} component={AppSettingsPage} />
+                <Route path="/settings/translations" exact={true} component={TranslationsPage} />
+                <Route path="/settings/translations/languages" exact={true} component={LanguagesListPage} />
+                <Route path="/settings/translations/languages/:langId" component={LanguageEditPage} />
+                <Route path="/settings/translations/phrases" exact={true} component={PhrasesListPage} />
+                <Route path="/settings/translations/phrases/:itemId" exact={true} component={PhraseEditPage} />
+                <Route path="/" render={() => <Redirect to="/home" />} exact={true} />
+              </IonRouterOutlet>
+              <IonTabBar slot="top">
+                <IonTabButton tab="home" href="/home">
+                  <IonIcon icon={imagesOutline} />
+                  <IonLabel>
+                    <FormattedMessage id="menu.home" defaultMessage="Featured" />
+                  </IonLabel>
+                </IonTabButton>
+                <IonTabButton tab="categories" href="/categories">
+                  <IonIcon icon={pricetagsOutline} />
+                  <IonLabel>
+                    <FormattedMessage id="menu.categories" defaultMessage="Categories" />
+                  </IonLabel>
+                </IonTabButton>
+                <IonTabButton tab="contact" href="/about">
+                  <IonIcon icon={cameraOutline} />
+                  <IonLabel>
+                    <FormattedMessage id="menu.about" defaultMessage="About" />
+                  </IonLabel>
+                </IonTabButton>
+                <IonTabButton tab="contact" href="/contact">
+                  <IonIcon icon={mailOpenOutline} />
+                  <IonLabel>
+                    <FormattedMessage id="menu.contact" defaultMessage="Contact" />
+                  </IonLabel>
+                </IonTabButton>
+                <IonTabButton tab="private" href="/settings">
+                  <IonIcon icon={languageOutline} />
+                  <IonLabel>
+                    <FormattedMessage id="menu.language" defaultMessage="English" />
+                  </IonLabel>
+                </IonTabButton>
+              </IonTabBar>
+            </IonTabs>
+          </IonReactRouter>
+        </DataLoader>
+      </ReactReduxFirebaseProvider>
+    </Provider>
   </IonApp>
 );
 
