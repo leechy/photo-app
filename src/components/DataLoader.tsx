@@ -27,6 +27,12 @@ const DataLoader: React.FC = ({ children }) => {
 
   // choose a language to use
   const [locale, setLocale] = useState(window.localStorage.getItem('lang') || '');
+  useEffect(() => {
+    if (locale !== '') {
+      dispatch({ type: 'SET_LANG', payload: locale });
+    }
+    // eslint-disable-next-line
+  }, [locale]);
 
   const getBrowserLocale = (langs: { [lang: string]: any }, defaultLocale = 'en') => {
     const targets = window?.navigator.languages || window?.navigator.language || defaultLocale;
@@ -47,7 +53,7 @@ const DataLoader: React.FC = ({ children }) => {
     if (locales?.item && Object.keys(locales.item).length && locale === '') {
       const newLocale = getBrowserLocale(locales.item);
       dispatch({ type: 'SET_LANG', payload: newLocale });
-      // setLocale(newLocale);
+
       try {
         window.localStorage.setItem('lang', newLocale);
       } catch (e) {

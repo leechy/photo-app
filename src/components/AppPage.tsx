@@ -21,6 +21,7 @@ type TAppPageProps = {
 
 const AppPage = ({ showHeading = false, title = '', backHref, buttons, children }: TAppPageProps): JSX.Element => {
   const app = useSelector((state: TStoreState) => state.firestore.data?.meta?.app);
+  const lang = useSelector((state: TStoreState) => state.ui.lang);
 
   // const location = useLocation();
   // console.log('app page location', location.pathname);
@@ -41,6 +42,7 @@ const AppPage = ({ showHeading = false, title = '', backHref, buttons, children 
     <IonPage>
       {showTitle && pageTitle !== '' && (
         <Helmet>
+          <html lang={lang} />
           <title>{pageTitle}</title>
         </Helmet>
       )}
