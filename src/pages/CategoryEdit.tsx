@@ -6,26 +6,14 @@ import { useFirestore } from 'react-redux-firebase';
 
 import { getTitle } from '../utils/i18n';
 
-import {
-  IonBackButton,
-  IonButton,
-  IonButtons,
-  IonContent,
-  IonHeader,
-  IonInput,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonPage,
-  IonTitle,
-  IonToolbar,
-} from '@ionic/react';
+import { IonButton, IonInput, IonItem, IonLabel, IonList } from '@ionic/react';
 import TextField from '../components/TextField';
+import AppPage from '../components/AppPage';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 // types
 import { TStoreState } from '../store';
 import { TCategory } from '../models/Category';
-import { FormattedMessage } from 'react-intl';
 
 const newItem = {
   id: '',
@@ -34,6 +22,8 @@ const newItem = {
 };
 
 const CategoryEditPage: React.FC = () => {
+  const intl = useIntl();
+
   const { itemId } = useParams<{ itemId: string }>();
   useFirestoreItemQuery('meta', 'categories');
 
@@ -100,69 +90,57 @@ const CategoryEditPage: React.FC = () => {
   };
 
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar mode="md">
-          <IonButtons slot="start">
-            <IonBackButton defaultHref="/settings/categories" />
-          </IonButtons>
-          <IonTitle>
-            {item ? (
-              getTitle(item.title)
-            ) : (
-              <FormattedMessage id="private.categories.new.title" defaultMessage="New Category" />
-            )}
-          </IonTitle>
-          <IonButtons slot="end">
-            <IonButton onClick={saveData}>
-              <FormattedMessage id="buttons.save" defaultMessage="Save" />
-            </IonButton>
-          </IonButtons>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent>
-        <IonList>
-          <IonItem>
-            <IonLabel>
-              <h2>
-                <FormattedMessage id="fields.path.label" defaultMessage="Path" />
-              </h2>
-              <p>
-                <FormattedMessage id="fields.path.description" defaultMessage="Identifier used in the page path" />
-              </p>
-            </IonLabel>
-            <IonInput
-              className="text-input"
-              name="id"
-              data-lpignore="true"
-              value={formData?.id}
-              onIonInput={updateFormData}
-              placeholder="weddings, anniversaries"
-            />
-          </IonItem>
-          <IonItem>
-            <TextField
-              type="text"
-              name="title"
-              placeholder=""
-              value={formData?.title}
-              onChange={updateFormData}
-              label={
-                <>
-                  <h2>
-                    <FormattedMessage id="fields.title.label" defaultMessage="Title" />
-                  </h2>
-                  <p>
-                    <FormattedMessage id="fields.title.description-plural" defaultMessage="Name in all languages" />
-                  </p>
-                </>
-              }
-              mono={false}
-            />
-          </IonItem>
-        </IonList>
-      </IonContent>
-    </IonPage>
+    <AppPage
+      title={item ? getTitle(item.title) : intl.formatMessage({ id: 'private.categories.new.title' })}
+      showHeading={true}
+      backHref="/settings/categories"
+      buttons={
+        <IonButton onClick={saveData}>
+          <FormattedMessage id="buttons.save" defaultMessage="Save" />
+        </IonButton>
+      }
+    >
+      <IonList>
+        <IonItem>
+          <IonLabel>
+            <h2>
+              <FormattedMessage id="fields.path.label" defaultMessage="Path" />
+            </h2>
+            <p>
+              <FormattedMessage id="fields.path.description" defaultMessage="Identifier used in the page path" />
+            </p>
+          </IonLabel>
+          <IonInput
+            className="text-input"
+            name="id"
+            data-lpignore="true"
+            value={formData?.id}
+            onIonInput={updateFormData}
+            placeholder="weddings, anniversaries"
+          />
+        </IonItem>
+        <IonItem>
+          <TextField
+            type="text"
+            name="title"
+            placeholder=""
+            value={formData?.title}
+            onChange={updateFormData}
+            label={
+              <>
+                <h2>
+                  <FormattedMessage id="fields.title.label" defaultMessage="Title" />
+                </h2>
+                <p>
+                  <FormattedMessage id="fields.title.description-plural" defaultMessage="Name in all languages" />
+                </p>
+              </>
+            }
+            mono={false}
+          />
+        </IonItem>
+      </IonList>
+    </AppPage>
   );
 };
 

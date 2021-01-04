@@ -4,30 +4,17 @@ import { useFirestore } from 'react-redux-firebase';
 import { getTitle } from '../utils/i18n';
 
 // components
-import {
-  IonBackButton,
-  IonButton,
-  IonButtons,
-  IonContent,
-  IonHeader,
-  IonIcon,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonPage,
-  IonReorder,
-  IonTitle,
-  IonToolbar,
-  isPlatform,
-} from '@ionic/react';
+import { IonButton, IonIcon, IonItem, IonLabel, IonList, IonReorder, isPlatform } from '@ionic/react';
 import LoadingScreen from '../components/LoadingScreen';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
+import AppPage from '../components/AppPage';
 
 // types
 import { closeCircleOutline } from 'ionicons/icons';
 import { TPhotoshoot, TPhotoshootsOrderedState } from '../models/Photoshoot';
 
 const PhotoshootsListPage: React.FC = () => {
+  const intl = useIntl();
   /**
    * Items list
    */
@@ -68,72 +55,64 @@ const PhotoshootsListPage: React.FC = () => {
   };
 
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar mode="md">
-          <IonButtons slot="start">
-            <IonBackButton defaultHref="/settings" />
-          </IonButtons>
-          <IonTitle>
-            <FormattedMessage id="private.photoshoots.title" defaultMessage="Photoshoots" />
-          </IonTitle>
-          <IonButtons slot="end">
-            {editMode ? (
-              <>
-                <IonButton onClick={cancelEditMode} color="primary">
-                  <FormattedMessage id="buttons.cancel" defaultMessage="Cancel" />
-                </IonButton>
-                <IonButton onClick={saveEdits}>
-                  <FormattedMessage id="buttons.save" defaultMessage="Save" />
-                </IonButton>
-              </>
-            ) : (
-              <>
-                <IonButton onClick={turnOnEditMode}>
-                  <FormattedMessage id="buttons.edit" defaultMessage="Edit" />
-                </IonButton>
-                <IonButton routerLink="/settings/photoshoots/new">
-                  <FormattedMessage id="buttons.add" defaultMessage="Add" />
-                </IonButton>
-              </>
-            )}
-          </IonButtons>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent fullscreen>
-        {items && items.length ? (
-          <IonList>
-            {items.map(shoot => (
-              <IonItem
-                key={shoot.id}
-                routerLink={editMode ? undefined : `/settings/photoshoots/${encodeURIComponent(shoot.id)}`}
-                detail={!editMode && isPlatform('ios')}
-              >
-                <IonReorder slot="start" />
-                <IonLabel>
-                  <h2>{getTitle(shoot.title)}</h2>
-                  <p>{shoot.date}</p>
-                </IonLabel>
-                {editMode && (
-                  <IonButton
-                    slot="end"
-                    fill="clear"
-                    shape="round"
-                    color="danger"
-                    data-id={shoot.id}
-                    onClick={() => deleteItem(shoot.id)}
-                  >
-                    <IonIcon slot="icon-only" icon={closeCircleOutline} />
-                  </IonButton>
-                )}
-              </IonItem>
-            ))}
-          </IonList>
+    <AppPage
+      title={intl.formatMessage({ id: 'private.photoshoots.title' })}
+      showHeading={true}
+      backHref="/settings"
+      buttons={
+        editMode ? (
+          <>
+            <IonButton onClick={cancelEditMode} color="primary">
+              <FormattedMessage id="buttons.cancel" defaultMessage="Cancel" />
+            </IonButton>
+            <IonButton onClick={saveEdits}>
+              <FormattedMessage id="buttons.save" defaultMessage="Save" />
+            </IonButton>
+          </>
         ) : (
-          <LoadingScreen />
-        )}
-      </IonContent>
-    </IonPage>
+          <>
+            <IonButton onClick={turnOnEditMode}>
+              <FormattedMessage id="buttons.edit" defaultMessage="Edit" />
+            </IonButton>
+            <IonButton routerLink="/settings/photoshoots/new">
+              <FormattedMessage id="buttons.add" defaultMessage="Add" />
+            </IonButton>
+          </>
+        )
+      }
+    >
+      {items && items.length ? (
+        <IonList>
+          {items.map(shoot => (
+            <IonItem
+              key={shoot.id}
+              routerLink={editMode ? undefined : `/settings/photoshoots/${encodeURIComponent(shoot.id)}`}
+              detail={!editMode && isPlatform('ios')}
+            >
+              <IonReorder slot="start" />
+              <IonLabel>
+                <h2>{getTitle(shoot.title)}</h2>
+                <p>{shoot.date}</p>
+              </IonLabel>
+              {editMode && (
+                <IonButton
+                  slot="end"
+                  fill="clear"
+                  shape="round"
+                  color="danger"
+                  data-id={shoot.id}
+                  onClick={() => deleteItem(shoot.id)}
+                >
+                  <IonIcon slot="icon-only" icon={closeCircleOutline} />
+                </IonButton>
+              )}
+            </IonItem>
+          ))}
+        </IonList>
+      ) : (
+        <LoadingScreen />
+      )}
+    </AppPage>
   );
 };
 

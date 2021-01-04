@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useFirestoreItemQuery } from '../hooks/useFirestoreItemQuery';
+import { useIntl } from 'react-intl';
+import { getTitle } from '../utils/i18n';
 
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import LoadingScreen from '../components/LoadingScreen';
+import AppPage from '../components/AppPage';
 
 import { TCategory } from '../models/Category';
 import './Categories.css';
-import { getTitle } from '../utils/i18n';
 
 const CategoriesPage: React.FC = () => {
+  const intl = useIntl();
+
   /**
    * Items list
    */
@@ -32,28 +35,21 @@ const CategoriesPage: React.FC = () => {
   }, [categories.item]);
 
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Categories</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent fullscreen>
-        <div className="ion-padding">
-          {items ? (
-            <>
-              {items.map(item => (
-                <div key={item.id}>
-                  <h3>{getTitle(item.title)}</h3>
-                </div>
-              ))}
-            </>
-          ) : (
-            <LoadingScreen />
-          )}
-        </div>
-      </IonContent>
-    </IonPage>
+    <AppPage title={intl.formatMessage({ id: 'categories.title' })}>
+      <div className="ion-padding app-content">
+        {items ? (
+          <>
+            {items.map(item => (
+              <div key={item.id}>
+                <h3>{getTitle(item.title)}</h3>
+              </div>
+            ))}
+          </>
+        ) : (
+          <LoadingScreen />
+        )}
+      </div>
+    </AppPage>
   );
 };
 

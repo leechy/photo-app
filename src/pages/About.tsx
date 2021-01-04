@@ -3,17 +3,15 @@ import { useIntl } from 'react-intl';
 
 import AppPage from '../components/AppPage';
 
-import './Contact.css';
-
-const ContactPage: React.FC = () => {
+const AboutPage: React.FC = () => {
   const intl = useIntl();
   return (
-    <AppPage title={intl.formatMessage({ id: 'contact.title' })}>
+    <AppPage title={intl.formatMessage({ id: 'about.title' })}>
       <div className="ion-padding app-content">
-        <h2>Here's the contact form</h2>
+        <h2>About text from the DB</h2>
       </div>
     </AppPage>
   );
 };
 
-export default ContactPage;
+export default AboutPage;

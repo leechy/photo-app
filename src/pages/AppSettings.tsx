@@ -4,20 +4,10 @@ import { shallowEqual, useSelector } from 'react-redux';
 import { useFirestore } from 'react-redux-firebase';
 import { useHistory } from 'react-router';
 
-import {
-  IonBackButton,
-  IonButton,
-  IonButtons,
-  IonContent,
-  IonHeader,
-  IonItem,
-  IonList,
-  IonPage,
-  IonTitle,
-  IonToolbar,
-} from '@ionic/react';
+import { IonButton, IonItem, IonList } from '@ionic/react';
 import TextField from '../components/TextField';
 import { FormattedMessage, useIntl } from 'react-intl';
+import AppPage from '../components/AppPage';
 
 import { TStoreState } from '../store';
 import { TAppData } from '../models/AppData';
@@ -64,76 +54,68 @@ const AppSettingsPage: React.FC = () => {
   };
 
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar mode="md">
-          <IonButtons slot="start">
-            <IonBackButton defaultHref="/settings" />
-          </IonButtons>
-          <IonTitle>
-            <FormattedMessage id="private.app-settings.title" defaultMessage="General Settings" />
-          </IonTitle>
-          <IonButtons slot="end">
-            <IonButton onClick={saveData}>
-              <FormattedMessage id="buttons.save" defaultMessage="Save" />
-            </IonButton>
-          </IonButtons>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent fullscreen>
-        <IonList>
-          <IonItem>
-            <TextField
-              type="text"
-              name="name"
-              placeholder={intl.formatMessage({
-                id: 'fields.app-name.placeholder',
-                defaultMessage: 'App title and title suffix',
-              })}
-              value={formData?.name}
-              onChange={updateFormData}
-              label={
-                <h2>
-                  <FormattedMessage id="fields.app-name.label" defaultMessage="Application Name" />
-                </h2>
-              }
-              mono={false}
-            />
-          </IonItem>
-          <IonItem>
-            <TextField
-              type="richtext"
-              name="title"
-              placeholder=""
-              value={formData?.title}
-              onChange={updateFormData}
-              label={intl.formatMessage({ id: 'fields.app-title.label', defaultMessage: 'Home Page Heading' })}
-              mono={false}
-            />
-          </IonItem>
-          <IonItem>
-            <TextField
-              type="text"
-              name="instagram"
-              placeholder="https://www.instagram.com/..."
-              value={formData?.instagram}
-              onChange={updateFormData}
-              label="Instagram"
-            />
-          </IonItem>
-          <IonItem>
-            <TextField
-              type="text"
-              name="facebook"
-              placeholder="https://www.facebook.com/..."
-              value={formData?.facebook}
-              onChange={updateFormData}
-              label="Facebook"
-            />
-          </IonItem>
-        </IonList>
-      </IonContent>
-    </IonPage>
+    <AppPage
+      title={intl.formatMessage({ id: 'private.app-settings.title' })}
+      showHeading={true}
+      backHref="/settings"
+      buttons={
+        <IonButton onClick={saveData}>
+          <FormattedMessage id="buttons.save" defaultMessage="Save" />
+        </IonButton>
+      }
+    >
+      <IonList>
+        <IonItem>
+          <TextField
+            type="text"
+            name="name"
+            placeholder={intl.formatMessage({
+              id: 'fields.app-name.placeholder',
+              defaultMessage: 'App title and title suffix',
+            })}
+            value={formData?.name}
+            onChange={updateFormData}
+            label={
+              <h2>
+                <FormattedMessage id="fields.app-name.label" defaultMessage="Application Name" />
+              </h2>
+            }
+            mono={false}
+          />
+        </IonItem>
+        <IonItem>
+          <TextField
+            type="richtext"
+            name="title"
+            placeholder=""
+            value={formData?.title}
+            onChange={updateFormData}
+            label={intl.formatMessage({ id: 'fields.app-title.label', defaultMessage: 'Home Page Heading' })}
+            mono={false}
+          />
+        </IonItem>
+        <IonItem>
+          <TextField
+            type="text"
+            name="instagram"
+            placeholder="https://www.instagram.com/..."
+            value={formData?.instagram}
+            onChange={updateFormData}
+            label="Instagram"
+          />
+        </IonItem>
+        <IonItem>
+          <TextField
+            type="text"
+            name="facebook"
+            placeholder="https://www.facebook.com/..."
+            value={formData?.facebook}
+            onChange={updateFormData}
+            label="Facebook"
+          />
+        </IonItem>
+      </IonList>
+    </AppPage>
   );
 };
 

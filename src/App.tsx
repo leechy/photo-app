@@ -15,8 +15,9 @@ import { FormattedMessage } from 'react-intl';
 
 // pages
 import HomePage from './pages/HomePage';
-import Categories from './pages/Categories';
-import Contact from './pages/Contact';
+import CategoriesPage from './pages/Categories';
+import AboutPage from './pages/About';
+import ContactPage from './pages/Contact';
 import PrivatePage from './pages/Private';
 import CategoriesListPage from './pages/CategoriesList';
 import CategoryEditPage from './pages/CategoryEdit';
@@ -61,8 +62,9 @@ const App: React.FC = () => (
             <IonTabs>
               <IonRouterOutlet>
                 <Route path="/home" component={HomePage} exact={true} />
-                <Route path="/categories" component={Categories} exact={true} />
-                <Route path="/contact" component={Contact} />
+                <Route path="/categories" component={CategoriesPage} exact={true} />
+                <Route path="/about" component={AboutPage} />
+                <Route path="/contact" component={ContactPage} />
                 <Route path="/settings" exact={true} component={PrivatePage} />
                 <Route path="/settings/photoshoots" exact={true} component={PhotoshootsListPage} />
                 <Route path="/settings/categories" exact={true} component={CategoriesListPage} />
@@ -90,7 +92,7 @@ const App: React.FC = () => (
                     <FormattedMessage id="menu.categories" defaultMessage="Categories" />
                   </IonLabel>
                 </IonTabButton>
-                <IonTabButton tab="contact" href="/about">
+                <IonTabButton tab="about" href="/about">
                   <IonIcon icon={cameraOutline} />
                   <IonLabel>
                     <FormattedMessage id="menu.about" defaultMessage="About" />

@@ -2,26 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router';
 import { useFirestoreItemQuery } from '../hooks/useFirestoreItemQuery';
 import { shallowEqual, useSelector } from 'react-redux';
+import { useFirestore } from 'react-redux-firebase';
 
-import {
-  IonBackButton,
-  IonButton,
-  IonButtons,
-  IonCheckbox,
-  IonContent,
-  IonHeader,
-  IonInput,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonPage,
-  IonTitle,
-  IonToolbar,
-} from '@ionic/react';
+import { IonButton, IonCheckbox, IonInput, IonItem, IonLabel, IonList } from '@ionic/react';
+import { FormattedMessage, useIntl } from 'react-intl';
+import AppPage from '../components/AppPage';
+
 import { TStoreState } from '../store';
 import { TLang } from '../models/Lang';
-import { useFirestore } from 'react-redux-firebase';
-import { FormattedMessage } from 'react-intl';
 
 const newLang = {
   code: '',
@@ -31,6 +19,8 @@ const newLang = {
 };
 
 const LanguagEditPage: React.FC = () => {
+  const intl = useIntl();
+
   const { langId } = useParams<{ langId: string }>();
   useFirestoreItemQuery('translations', 'locales');
 
@@ -97,76 +87,68 @@ const LanguagEditPage: React.FC = () => {
   };
 
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar mode="md">
-          <IonButtons slot="start">
-            <IonBackButton defaultHref="/settings/translations/languages" />
-          </IonButtons>
-          <IonTitle>
-            {lang ? lang.title : <FormattedMessage id="private.languages.new.title" defaultMessage="New Language" />}
-          </IonTitle>
-          <IonButtons slot="end">
-            <IonButton onClick={saveData}>
-              <FormattedMessage id="buttons.save" defaultMessage="Save" />
-            </IonButton>
-          </IonButtons>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent>
-        <IonList>
-          <IonItem>
-            <IonLabel>
-              <h2>
-                <FormattedMessage id="fields.lang-code.label" defaultMessage="Code" />
-              </h2>
-              <p>
-                <FormattedMessage id="fields.lang-code.description" defaultMessage="ICU locale code" />
-              </p>
-            </IonLabel>
-            <IonInput
-              className="text-input"
-              name="code"
-              data-lpignore="true"
-              value={formData?.code}
-              onIonInput={updateFormData}
-              placeholder="en, pt-BR"
-            />
-          </IonItem>
-          <IonItem>
-            <IonLabel>
-              <h2>
-                <FormattedMessage id="fields.title.label" defaultMessage="Title" />
-              </h2>
-              <p>
-                <FormattedMessage id="fields.title.language.description" defaultMessage="Language name" />
-              </p>
-            </IonLabel>
-            <IonInput
-              className="text-input"
-              name="title"
-              value={formData?.title}
-              onIonInput={updateFormData}
-              placeholder="English, Français"
-            />
-          </IonItem>
-          <IonItem>
-            <IonCheckbox slot="end" name="active" onIonChange={updateFormData} checked={formData?.active} />
-            <IonLabel>
-              <h2>
-                <FormattedMessage id="fields.active.label" defaultMessage="Active" />
-              </h2>
-              <p>
-                <FormattedMessage
-                  id="fields.active.language.description"
-                  defaultMessage="Is this language available to the users"
-                />
-              </p>
-            </IonLabel>
-          </IonItem>
-        </IonList>
-      </IonContent>
-    </IonPage>
+    <AppPage
+      title={lang ? lang.title : intl.formatMessage({ id: 'private.languages.new.title' })}
+      showHeading={true}
+      backHref="/settings/translations/languages"
+      buttons={
+        <IonButton onClick={saveData}>
+          <FormattedMessage id="buttons.save" defaultMessage="Save" />
+        </IonButton>
+      }
+    >
+      <IonList>
+        <IonItem>
+          <IonLabel>
+            <h2>
+              <FormattedMessage id="fields.lang-code.label" defaultMessage="Code" />
+            </h2>
+            <p>
+              <FormattedMessage id="fields.lang-code.description" defaultMessage="ICU locale code" />
+            </p>
+          </IonLabel>
+          <IonInput
+            className="text-input"
+            name="code"
+            data-lpignore="true"
+            value={formData?.code}
+            onIonInput={updateFormData}
+            placeholder="en, pt-BR"
+          />
+        </IonItem>
+        <IonItem>
+          <IonLabel>
+            <h2>
+              <FormattedMessage id="fields.title.label" defaultMessage="Title" />
+            </h2>
+            <p>
+              <FormattedMessage id="fields.title.language.description" defaultMessage="Language name" />
+            </p>
+          </IonLabel>
+          <IonInput
+            className="text-input"
+            name="title"
+            value={formData?.title}
+            onIonInput={updateFormData}
+            placeholder="English, Français"
+          />
+        </IonItem>
+        <IonItem>
+          <IonCheckbox slot="end" name="active" onIonChange={updateFormData} checked={formData?.active} />
+          <IonLabel>
+            <h2>
+              <FormattedMessage id="fields.active.label" defaultMessage="Active" />
+            </h2>
+            <p>
+              <FormattedMessage
+                id="fields.active.language.description"
+                defaultMessage="Is this language available to the users"
+              />
+            </p>
+          </IonLabel>
+        </IonItem>
+      </IonList>
+    </AppPage>
   );
 };
 

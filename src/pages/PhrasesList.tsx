@@ -4,24 +4,10 @@ import { useFirestore } from 'react-redux-firebase';
 import { shallowEqual, useSelector } from 'react-redux';
 
 // components
-import {
-  IonBackButton,
-  IonButton,
-  IonButtons,
-  IonContent,
-  IonHeader,
-  IonIcon,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonPage,
-  IonReorder,
-  IonTitle,
-  IonToolbar,
-  isPlatform,
-} from '@ionic/react';
+import { IonButton, IonIcon, IonItem, IonLabel, IonList, IonReorder, isPlatform } from '@ionic/react';
 import LoadingScreen from '../components/LoadingScreen';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
+import AppPage from '../components/AppPage';
 
 // types
 import { closeCircleOutline } from 'ionicons/icons';
@@ -29,6 +15,8 @@ import { TMessage } from '../models/Message';
 import { TStoreState } from '../store';
 
 const PhrasesListPage: React.FC = () => {
+  const intl = useIntl();
+
   /**
    * Languages
    */
@@ -87,94 +75,86 @@ const PhrasesListPage: React.FC = () => {
   };
 
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar mode="md">
-          <IonButtons slot="start">
-            <IonBackButton defaultHref="/settings/translations" />
-          </IonButtons>
-          <IonTitle>
-            <FormattedMessage id="private.phrases.title" defaultMessage="Phrases" />
-          </IonTitle>
-          <IonButtons slot="end">
-            {editMode ? (
-              <>
-                <IonButton onClick={cancelEditMode} color="primary">
-                  <FormattedMessage id="buttons.cancel" defaultMessage="Cancel" />
-                </IonButton>
-                <IonButton onClick={saveEdits}>
-                  <FormattedMessage id="buttons.save" defaultMessage="Save" />
-                </IonButton>
-              </>
-            ) : (
-              <>
-                <IonButton onClick={turnOnEditMode}>
-                  <FormattedMessage id="buttons.edit" defaultMessage="Edit" />
-                </IonButton>
-                <IonButton routerLink="/settings/translations/phrases/new">
-                  <FormattedMessage id="buttons.add" defaultMessage="Add" />
-                </IonButton>
-              </>
-            )}
-          </IonButtons>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent fullscreen>
-        {items.length ? (
-          <IonList>
-            {items.map(message => (
-              <IonItem
-                key={message.id}
-                routerLink={editMode ? undefined : `/settings/translations/phrases/${message.id}`}
-                detail={!editMode && isPlatform('ios')}
-              >
-                <IonReorder slot="start" />
-                <IonLabel>
-                  <h2>{message.id}</h2>
-                  <p>{message.description}</p>
-                </IonLabel>
-                {message.phrases && typeof message.phrases !== 'string' && (
-                  <div className="item--end-state" slot="end">
-                    {langs &&
-                      Object.keys(langs)
-                        .sort((lang1, lang2) => (langs[lang1].order > langs[lang2].order ? 1 : -1))
-                        .map(langCode => (
-                          <span
-                            key={`${message.id}-${langCode}`}
-                            className={
-                              typeof message.phrases === 'string' ||
-                              !message.phrases ||
-                              !message.phrases[langCode] ||
-                              message.phrases[langCode] === ''
-                                ? 'item--end-state-na'
-                                : ''
-                            }
-                          >
-                            {langCode.toUpperCase()}
-                          </span>
-                        ))}
-                  </div>
-                )}
-                {editMode && (
-                  <IonButton
-                    slot="end"
-                    fill="clear"
-                    shape="round"
-                    color="danger"
-                    data-id={message.id}
-                    onClick={() => deleteItem(message.id)}
-                  >
-                    <IonIcon slot="icon-only" icon={closeCircleOutline} />
-                  </IonButton>
-                )}
-              </IonItem>
-            ))}
-          </IonList>
+    <AppPage
+      title={intl.formatMessage({ id: 'private.phrases.title' })}
+      showHeading={true}
+      backHref="/settings/translations"
+      buttons={
+        editMode ? (
+          <>
+            <IonButton onClick={cancelEditMode} color="primary">
+              <FormattedMessage id="buttons.cancel" defaultMessage="Cancel" />
+            </IonButton>
+            <IonButton onClick={saveEdits}>
+              <FormattedMessage id="buttons.save" defaultMessage="Save" />
+            </IonButton>
+          </>
         ) : (
-          <LoadingScreen />
-        )}
-      </IonContent>
-    </IonPage>
+          <>
+            <IonButton onClick={turnOnEditMode}>
+              <FormattedMessage id="buttons.edit" defaultMessage="Edit" />
+            </IonButton>
+            <IonButton routerLink="/settings/categories/new">
+              <FormattedMessage id="buttons.add" defaultMessage="Add" />
+            </IonButton>
+          </>
+        )
+      }
+    >
+      {items.length ? (
+        <IonList>
+          {items.map(message => (
+            <IonItem
+              key={message.id}
+              routerLink={editMode ? undefined : `/settings/translations/phrases/${message.id}`}
+              detail={!editMode && isPlatform('ios')}
+            >
+              <IonReorder slot="start" />
+              <IonLabel>
+                <h2>{message.id}</h2>
+                <p>{message.description}</p>
+              </IonLabel>
+              {message.phrases && typeof message.phrases !== 'string' && (
+                <div className="item--end-state" slot="end">
+                  {langs &&
+                    Object.keys(langs)
+                      .sort((lang1, lang2) => (langs[lang1].order > langs[lang2].order ? 1 : -1))
+                      .map(langCode => (
+                        <span
+                          key={`${message.id}-${langCode}`}
+                          className={
+                            typeof message.phrases === 'string' ||
+                            !message.phrases ||
+                            !message.phrases[langCode] ||
+                            message.phrases[langCode] === ''
+                              ? 'item--end-state-na'
+                              : ''
+                          }
+                        >
+                          {langCode.toUpperCase()}
+                        </span>
+                      ))}
+                </div>
+              )}
+              {editMode && (
+                <IonButton
+                  slot="end"
+                  fill="clear"
+                  shape="round"
+                  color="danger"
+                  data-id={message.id}
+                  onClick={() => deleteItem(message.id)}
+                >
+                  <IonIcon slot="icon-only" icon={closeCircleOutline} />
+                </IonButton>
+              )}
+            </IonItem>
+          ))}
+        </IonList>
+      ) : (
+        <LoadingScreen />
+      )}
+    </AppPage>
   );
 };
 

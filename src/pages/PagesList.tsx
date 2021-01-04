@@ -4,25 +4,10 @@ import { useFirestore } from 'react-redux-firebase';
 import { getTitle } from '../utils/i18n';
 
 // components
-import {
-  IonBackButton,
-  IonButton,
-  IonButtons,
-  IonContent,
-  IonHeader,
-  IonIcon,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonPage,
-  IonReorder,
-  IonReorderGroup,
-  IonTitle,
-  IonToolbar,
-  isPlatform,
-} from '@ionic/react';
+import { IonButton, IonIcon, IonItem, IonLabel, IonList, IonReorder, IonReorderGroup, isPlatform } from '@ionic/react';
 import LoadingScreen from '../components/LoadingScreen';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
+import AppPage from '../components/AppPage';
 
 // types
 import { closeCircleOutline } from 'ionicons/icons';
@@ -30,6 +15,8 @@ import { ItemReorderEventDetail } from '@ionic/core';
 import { TPage } from '../models/Page';
 
 const PagesListPage: React.FC = () => {
+  const intl = useIntl();
+
   /**
    * Items list
    */
@@ -88,74 +75,66 @@ const PagesListPage: React.FC = () => {
   };
 
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar mode="md">
-          <IonButtons slot="start">
-            <IonBackButton defaultHref="/settings" />
-          </IonButtons>
-          <IonTitle>
-            <FormattedMessage id="private.pages.title" defaultMessage="Pages Content" />
-          </IonTitle>
-          <IonButtons slot="end">
-            {editMode ? (
-              <>
-                <IonButton onClick={cancelEditMode} color="primary">
-                  <FormattedMessage id="buttons.cancel" defaultMessage="Cancel" />
-                </IonButton>
-                <IonButton onClick={saveEdits}>
-                  <FormattedMessage id="buttons.save" defaultMessage="Save" />
-                </IonButton>
-              </>
-            ) : (
-              <>
-                <IonButton onClick={turnOnEditMode}>
-                  <FormattedMessage id="buttons.edit" defaultMessage="Edit" />
-                </IonButton>
-                <IonButton routerLink="/settings/pages-content/new">
-                  <FormattedMessage id="buttons.add" defaultMessage="Add" />
-                </IonButton>
-              </>
-            )}
-          </IonButtons>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent fullscreen>
-        {items.length ? (
-          <IonList>
-            <IonReorderGroup disabled={!editMode} onIonItemReorder={onReorder}>
-              {items.map(page => (
-                <IonItem
-                  key={page.id}
-                  routerLink={editMode ? undefined : `/settings/pages-content/${encodeURIComponent(page.id)}`}
-                  detail={!editMode && isPlatform('ios')}
-                >
-                  <IonReorder slot="start" />
-                  <IonLabel>
-                    <h2>{getTitle(page.title)}</h2>
-                    <p>{page.id}</p>
-                  </IonLabel>
-                  {editMode && (
-                    <IonButton
-                      slot="end"
-                      fill="clear"
-                      shape="round"
-                      color="danger"
-                      data-id={page.id}
-                      onClick={() => deleteItem(page.id)}
-                    >
-                      <IonIcon slot="icon-only" icon={closeCircleOutline} />
-                    </IonButton>
-                  )}
-                </IonItem>
-              ))}
-            </IonReorderGroup>
-          </IonList>
+    <AppPage
+      title={intl.formatMessage({ id: 'private.pages.title' })}
+      showHeading={true}
+      backHref="/settings"
+      buttons={
+        editMode ? (
+          <>
+            <IonButton onClick={cancelEditMode} color="primary">
+              <FormattedMessage id="buttons.cancel" defaultMessage="Cancel" />
+            </IonButton>
+            <IonButton onClick={saveEdits}>
+              <FormattedMessage id="buttons.save" defaultMessage="Save" />
+            </IonButton>
+          </>
         ) : (
-          <LoadingScreen />
-        )}
-      </IonContent>
-    </IonPage>
+          <>
+            <IonButton onClick={turnOnEditMode}>
+              <FormattedMessage id="buttons.edit" defaultMessage="Edit" />
+            </IonButton>
+            <IonButton routerLink="/settings/categories/new">
+              <FormattedMessage id="buttons.add" defaultMessage="Add" />
+            </IonButton>
+          </>
+        )
+      }
+    >
+      {items.length ? (
+        <IonList>
+          <IonReorderGroup disabled={!editMode} onIonItemReorder={onReorder}>
+            {items.map(page => (
+              <IonItem
+                key={page.id}
+                routerLink={editMode ? undefined : `/settings/pages-content/${encodeURIComponent(page.id)}`}
+                detail={!editMode && isPlatform('ios')}
+              >
+                <IonReorder slot="start" />
+                <IonLabel>
+                  <h2>{getTitle(page.title)}</h2>
+                  <p>{page.id}</p>
+                </IonLabel>
+                {editMode && (
+                  <IonButton
+                    slot="end"
+                    fill="clear"
+                    shape="round"
+                    color="danger"
+                    data-id={page.id}
+                    onClick={() => deleteItem(page.id)}
+                  >
+                    <IonIcon slot="icon-only" icon={closeCircleOutline} />
+                  </IonButton>
+                )}
+              </IonItem>
+            ))}
+          </IonReorderGroup>
+        </IonList>
+      ) : (
+        <LoadingScreen />
+      )}
+    </AppPage>
   );
 };
 

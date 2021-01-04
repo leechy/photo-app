@@ -61,6 +61,11 @@ const DataLoader: React.FC = ({ children }) => {
   const messages = useFirestoreItemQuery('translations', locale);
 
   /**
+   * Load App Settings
+   */
+  useFirestoreItemQuery('meta', 'app');
+
+  /**
    * Load Categories
    */
   useFirestoreItemQuery('meta', 'categories');
