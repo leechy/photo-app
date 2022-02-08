@@ -18,6 +18,7 @@ import { TCategory } from '../models/Category';
 const newItem = {
   id: '',
   title: '',
+  description: '',
   order: 0,
 };
 
@@ -139,6 +140,29 @@ const CategoryEditPage: React.FC = () => {
             mono={false}
           />
         </IonItem>
+        <IonItem>
+          <TextField
+            type="richtext"
+            name="content"
+            placeholder=""
+            value={formData?.description}
+            onChange={updateFormData}
+            label={
+              <>
+                <h2>
+                  <FormattedMessage id="fields.description.label" defaultMessage="Description" />
+                </h2>
+                <p>
+                  <FormattedMessage
+                    id="fields.description.description-category"
+                    defaultMessage="Category short description seen on the home page"
+                  />
+                </p>
+              </>
+            }
+            mono={false}
+          />
+        </IonItem>{' '}
       </IonList>
     </AppPage>
   );

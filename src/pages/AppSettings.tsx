@@ -114,6 +114,16 @@ const AppSettingsPage: React.FC = () => {
             label="Facebook"
           />
         </IonItem>
+        <IonItem>
+          <TextField
+            type="text"
+            name="twitter"
+            placeholder="https://www.twitter.com/..."
+            value={formData?.twitter}
+            onChange={updateFormData}
+            label="Twitter"
+          />
+        </IonItem>
       </IonList>
     </AppPage>
   );
