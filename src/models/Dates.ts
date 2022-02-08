@@ -1,5 +1,5 @@
 export type TDates = {
-  range: boolean;
   date: string;
+  range?: boolean;
   endDate?: string;
 };

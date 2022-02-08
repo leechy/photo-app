@@ -9,6 +9,13 @@ export type TPhotoshoot = {
   category?: string;
   client?: string;
   location?: string;
+  latitude?: number;
+  longitude?: number;
+};
+
+export type TPhotoshootState = {
+  item: TPhotoshoot;
+  state: RequestState;
 };
 
 export type TPhotoshootsState = {
