@@ -17,9 +17,10 @@ const DataLoader: React.FC = ({ children }) => {
   // load available languages
   const locales = useFirestoreItemQuery('translations', 'locales');
 
+  // get language from the state
   const stateLang = useSelector((state: TStoreState) => state.ui?.lang);
   useEffect(() => {
-    if (stateLang !== '' && locale && stateLang !== locale) {
+    if (stateLang !== '' && stateLang !== locale) {
       setLocale(stateLang);
     }
     // eslint-disable-next-line
@@ -28,7 +29,7 @@ const DataLoader: React.FC = ({ children }) => {
   // choose a language to use
   const [locale, setLocale] = useState(window.localStorage.getItem('lang') || '');
   useEffect(() => {
-    if (locale !== '') {
+    if (locale !== '' && locale !== stateLang) {
       dispatch({ type: 'SET_LANG', payload: locale });
     }
     // eslint-disable-next-line
@@ -75,6 +76,11 @@ const DataLoader: React.FC = ({ children }) => {
    * Load Categories
    */
   useFirestoreItemQuery('meta', 'categories');
+
+  /**
+   * Load Pages content
+   */
+  useFirestoreItemQuery('meta', 'pages');
 
   if (messages.item) {
     return (
