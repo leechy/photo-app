@@ -17,6 +17,7 @@ import { TAppData } from './models/AppData';
 import { TCategory } from './models/Category';
 import { TPage } from './models/Page';
 import { TMessage } from './models/Message';
+import { TPhotoshoot } from './models/Photoshoot';
 
 // react-redux-firebase config
 const rrfConfig = {
@@ -67,6 +68,9 @@ export type TStoreState = {
   firebase: any;
   firestore: {
     data?: {
+      photoshoots?: {
+        [shootId: string]: TPhotoshoot;
+      };
       translations?: {
         locales?: {
           [langId: string]: TLang;

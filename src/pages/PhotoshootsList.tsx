@@ -92,7 +92,7 @@ const PhotoshootsListPage: React.FC = () => {
               <IonReorder slot="start" />
               <IonLabel>
                 <h2>{getTitle(shoot.title)}</h2>
-                <p>{shoot.date}</p>
+                <p>{shoot.date.date}</p>
               </IonLabel>
               {editMode && (
                 <IonButton
@@ -109,6 +109,12 @@ const PhotoshootsListPage: React.FC = () => {
             </IonItem>
           ))}
         </IonList>
+      ) : shoots.state.isEmpty ? (
+        <div className="ion-padding app-content">
+          <p>
+            <FormattedMessage id="private.photoshoots.noitems" />
+          </p>
+        </div>
       ) : (
         <LoadingScreen />
       )}

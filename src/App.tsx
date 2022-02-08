@@ -9,7 +9,7 @@ import { IonReactRouter } from '@ionic/react-router';
 
 // components
 import { IonApp, IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs } from '@ionic/react';
-import { cameraOutline, imagesOutline, languageOutline, mailOpenOutline, pricetagsOutline } from 'ionicons/icons';
+import { cameraOutline, easelOutline, languageOutline, mailOpenOutline, trailSignOutline } from 'ionicons/icons';
 import DataLoader from './components/DataLoader';
 import { FormattedMessage } from 'react-intl';
 
@@ -55,6 +55,7 @@ const LanguageEditPage = lazy(() => import('./pages/LanguageEdit'));
 const PhrasesListPage = lazy(() => import('./pages/PhrasesList'));
 const PhraseEditPage = lazy(() => import('./pages/PhraseEdit'));
 const PhotoshootsListPage = lazy(() => import('./pages/PhotoshootsList'));
+const PhotoshootEditPage = lazy(() => import('./pages/PhotoshootEdit'));
 
 const App: React.FC = () => (
   <IonApp>
@@ -71,6 +72,7 @@ const App: React.FC = () => (
                   <Route path="/contact" component={ContactPage} />
                   <Route path="/settings" exact={true} component={PrivatePage} />
                   <Route path="/settings/photoshoots" exact={true} component={PhotoshootsListPage} />
+                  <Route path="/settings/photoshoots/:itemId" exact={true} component={PhotoshootEditPage} />
                   <Route path="/settings/categories" exact={true} component={CategoriesListPage} />
                   <Route path="/settings/categories/:itemId" exact={true} component={CategoryEditPage} />
                   <Route path="/settings/pages-content" exact={true} component={PagesListPage} />
@@ -85,21 +87,21 @@ const App: React.FC = () => (
                 </IonRouterOutlet>
                 <IonTabBar slot="top">
                   <IonTabButton tab="home" href="/home">
-                    <IonIcon icon={imagesOutline} />
+                    <IonIcon icon={easelOutline} />
                     <IonLabel>
                       <FormattedMessage id="menu.home" defaultMessage="Featured" />
-                    </IonLabel>
-                  </IonTabButton>
-                  <IonTabButton tab="categories" href="/categories">
-                    <IonIcon icon={pricetagsOutline} />
-                    <IonLabel>
-                      <FormattedMessage id="menu.categories" defaultMessage="Categories" />
                     </IonLabel>
                   </IonTabButton>
                   <IonTabButton tab="about" href="/about">
                     <IonIcon icon={cameraOutline} />
                     <IonLabel>
                       <FormattedMessage id="menu.about" defaultMessage="About" />
+                    </IonLabel>
+                  </IonTabButton>
+                  <IonTabButton tab="categories" href="/categories">
+                    <IonIcon icon={trailSignOutline} />
+                    <IonLabel>
+                      <FormattedMessage id="menu.categories" defaultMessage="Categories" />
                     </IonLabel>
                   </IonTabButton>
                   <IonTabButton tab="contact" href="/contact">

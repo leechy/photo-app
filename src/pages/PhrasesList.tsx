@@ -94,7 +94,7 @@ const PhrasesListPage: React.FC = () => {
             <IonButton onClick={turnOnEditMode}>
               <FormattedMessage id="buttons.edit" defaultMessage="Edit" />
             </IonButton>
-            <IonButton routerLink="/settings/categories/new">
+            <IonButton routerLink="/settings/translations/phrases/new">
               <FormattedMessage id="buttons.add" defaultMessage="Add" />
             </IonButton>
           </>

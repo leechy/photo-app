@@ -67,6 +67,7 @@ const PhraseEditPage: React.FC = () => {
       }
     }
     updatedItems[formData.id] = formData;
+
     firestore
       .doc('/translations/messages')
       .set(updatedItems)
